@@ -1,0 +1,33 @@
+{
+  "name": "api-dot-food-delivery",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pablogonzalezz/api-dot-food-delivery.git"
+  },
+  "version": "1.0.0",
+  "description": "Api do sistema Dot Food Delivery",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "keywords": [
+    "Api",
+    "dot",
+    "food",
+    "delivery"
+  ],
+  "author": "Pablo Gonzalez",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "continuation-local-storage": "^3.2.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "pg": "^8.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
