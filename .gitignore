@@ -1,2 +1,8 @@
-node_modules/
-yarn-error.log
+#IGNORE NODE_MODULES
+node_modules
+
+#IGNORE YARN-ERROR.LOG
+yarn-error.log*
+
+#IGNORE README.MD
+README.md*
