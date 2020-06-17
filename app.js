@@ -14,13 +14,13 @@ connectAllDb();
 app.use(connectionResolver.resolve);
 
 //DECLARAÇÃO DAS ROTAS
-const items = require('./items');
+const rotaItems = require('./items');
 
 //INICIALIZAÇÃO DAS ROTAS
-app.get('/items', items.getAll);
+app.use('/items', rotaItems);
 
 app.get('/', (req, res, next) => {
-    res.json({ body: 'Hello multi-tenant application.' });
+    res.status(200).json({msg: 'The Application in running'})
 });
 
 //Tratamento de erro: rota não encontrada

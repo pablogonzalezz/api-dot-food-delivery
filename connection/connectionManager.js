@@ -1,4 +1,4 @@
-const pg = require('pg').Client;
+const pool = require('pg').Pool;
 const commonDBConnection = require('./commonDBConnection');
 const getNamespace = require('continuation-local-storage').getNamespace;
 
@@ -23,7 +23,7 @@ async function connectAllDb() {
       tenants
         .map(tenant => {
           return { 
-            [tenant.slug]: new pg(createConnectionConfig(tenant).connection)
+            [tenant.slug]: new pool(createConnectionConfig(tenant).connection)
           }
         })
         .reduce((prev, next) => {
