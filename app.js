@@ -3,11 +3,13 @@ const app = express();
 const morgan = require('morgan');
 const connectAllDb = require('./connection/connectionManager').connectAllDb;
 const connectionResolver = require('./connection/connectionResolver');
+const cors = require('cors');
 
 // Definindo configurações do app
 app.use(morgan('dev'));
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
+app.use(cors());
 
 connectAllDb();
 
@@ -32,11 +34,9 @@ app.use((req, res, next) => {
 
 // Configurações dos acessos 
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*'); //Se for filtrar os acessos, 
-    res.header(                                     //trocar o '*' pela url permitida
-        'Access-Control-Allow-Header',
-        'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-    );
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
 })
 
 module.exports = app;
