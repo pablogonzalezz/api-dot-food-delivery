@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.get('/get_all', async function(req,res,next) {
     try {
-        await getConnection().query('SELECT * FROM items', (error, results) => {
+        await getConnection().query('SELECT * FROM items ORDER BY id ASC', (error, results) => {
             if(error) {
                 throw error;
             }
@@ -28,6 +28,24 @@ router.get('/get_all', async function(req,res,next) {
 router.get('/get_item/:id', async function(req, res, next) {
     try {
         await getConnection().query(`SELECT * FROM items WHERE id=${req.params.id}`, (error, results) => {
+            if(error) {
+                throw error;
+            }
+            console.log('requisição completada com sucesso');
+            res.status(200).json(results.rows);
+        })
+    } catch (error) {
+        console.error('erro ao fazer requisição: ', error);
+        res.status(500).json({msg: 'erro ao fazer a requisição', obj:error.message});
+    }
+})
+
+/**
+* Get specific item by the item_group id.
+**/
+router.get('/get_item_by_group/:id', async function(req, res, next) {
+    try {
+        await getConnection().query(`SELECT * FROM items WHERE group_id=${req.params.id} ORDER BY id ASC`, (error, results) => {
             if(error) {
                 throw error;
             }

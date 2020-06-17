@@ -17,9 +17,11 @@ app.use(connectionResolver.resolve);
 
 //DECLARAÇÃO DAS ROTAS
 const rotaItems = require('./routes/items');
+const rotaItemGroup = require('./routes/item_group');
 
 //INICIALIZAÇÃO DAS ROTAS
 app.use('/items', rotaItems);
+app.use('/item_group', rotaItemGroup);
 
 app.get('/', (req, res, next) => {
     res.status(200).json({msg: 'The Application in running'})
