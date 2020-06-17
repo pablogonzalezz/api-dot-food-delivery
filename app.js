@@ -14,7 +14,7 @@ connectAllDb();
 app.use(connectionResolver.resolve);
 
 //DECLARAÇÃO DAS ROTAS
-const rotaItems = require('./items');
+const rotaItems = require('./routes/items');
 
 //INICIALIZAÇÃO DAS ROTAS
 app.use('/items', rotaItems);
