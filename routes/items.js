@@ -102,7 +102,7 @@ router.post('/update_item/:id', async function(req, res, next) {
         price: req.body.price || null
     }
 
-    if(item.title && item.description) {
+    if(item.title && item.description && item.price) {
         try {
             await getConnection().query(
                 `UPDATE items 
