@@ -5,8 +5,6 @@ const router = express.Router();
 /**
 * Get all items.
 **/
-
-
 router.get('/get_all', async function(req,res,next) {
     try {
         await getConnection().query('SELECT * FROM items ORDER BY id ASC', (error, results) => {
@@ -66,14 +64,15 @@ router.post('/create_item', async function(req, res, next) {
         title: req.body.title || null,
         description: req.body.description || null,
         image: req.body.image || null,
-        group_id: req.body.group_id || null
+        group_id: req.body.group_id || null,
+        price: req.body.price || null
     }
     // CHECANDO CAMPOS OBRIGATÓRIOS
-    if(item.title && item.description) {
+    if(item.title && item.description && item.price) {
         try {
             await getConnection().query(
-                `INSERT INTO items(title, description, image, group_id)
-                VALUES('${item.title}', '${item.description}', '${item.image}', '${item.group_id}');`
+                `INSERT INTO items(title, description, image, group_id, price)
+                VALUES('${item.title}', '${item.description}', '${item.image}', '${item.group_id}', '${item.price}');`
                 , (error, results) => {
                 if(error) {
                     throw error;
@@ -99,14 +98,15 @@ router.post('/update_item/:id', async function(req, res, next) {
         title: req.body.title || null,
         description: req.body.description || null,
         image: req.body.image || null,
-        group_id: req.body.group_id || null
+        group_id: req.body.group_id || null,
+        price: req.body.price || null
     }
 
-    if(item.title && item.description) {
+    if(item.title && item.description && item.price) {
         try {
             await getConnection().query(
                 `UPDATE items 
-                SET title='${item.title}', description='${item.description}', image='${item.image}', group_id='${item.group_id}' 
+                SET title='${item.title}', description='${item.description}', image='${item.image}', group_id='${item.group_id}, price='${item.price}'' 
                 WHERE id=${req.params.id}`, 
                 (error, results) => {
                 if(error) {
