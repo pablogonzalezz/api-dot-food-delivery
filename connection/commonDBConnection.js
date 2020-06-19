@@ -10,7 +10,6 @@ const bd_settings = {
 
 const pool = new Pool(bd_settings);
 
-
 module.exports = {
   pool
 }

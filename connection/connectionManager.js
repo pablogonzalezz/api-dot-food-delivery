@@ -11,7 +11,9 @@ async function connectAllDb() {
     let tenants;
   
     try {
-      tenants = (await commonDBConnection.pool.query('SELECT * FROM tenants')).rows;
+      const client = await commonDBConnection.pool.connect();
+      await client.query('SELECT * FROM tenants').then(res => {tenants = res.rows; client.release()})
+      
       console.log('databases connected: ', tenants.map(tenant => tenant.db_name))
     } catch (e) {
       console.log('error', e);
@@ -42,7 +44,7 @@ function createConnectionConfig(tenant) {
         port: tenant.db_port,
         user: tenant.db_username,
         database: tenant.db_name,
-        password: tenant.db_password
+        password: tenant.db_password,
       },
       pool: { min: 2, max: 20 }
     };
