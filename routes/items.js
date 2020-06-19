@@ -75,7 +75,7 @@ router.post('/create_item', async function(req, res, next) {
         description: req.body.description || null,
         image: req.body.image || null,
         group_id: req.body.group_id || null,
-        price: req.body.price || null
+        price: req.body.price.replace(',', '.') || null
     }
 
     // CHECANDO CAMPOS OBRIGATÓRIOS
@@ -84,7 +84,7 @@ router.post('/create_item', async function(req, res, next) {
             await getConnection().connect( async (err, client, done) => {
                 await client.query(
                     `INSERT INTO items(title, description, image, group_id, price)
-                    VALUES('${item.title}', '${item.description}', '${item.image}', '${item.group_id}', '${item.price}');`
+                    VALUES('${item.title}', '${item.description}', '${item.image}', '${item.group_id}', ${item.price});`
                 ).then(results => {
                     if(err) {
                         console.error('error: ', err);
@@ -98,7 +98,7 @@ router.post('/create_item', async function(req, res, next) {
             res.status(500).json({msg: 'erro ao fazer a requisição', obj:error.message});
         }
     } else {
-        console.error('erro ao fazer requisição: ');
+        console.error('erro ao fazer requisição: ', item);
         res.status(500).json({msg: 'Cheque se os campos foram preenchidos adequadamente', obj:item});
     }
 })
@@ -113,7 +113,7 @@ router.post('/update_item/:id', async function(req, res, next) {
         description: req.body.description || null,
         image: req.body.image || null,
         group_id: req.body.group_id || null,
-        price: req.body.price || null
+        price: req.body.price.replace(',', '.') || null
     }
 
     if(item.title && item.description && item.price) {
