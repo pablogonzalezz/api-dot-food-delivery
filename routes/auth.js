@@ -1,12 +1,14 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const getConnection = require('../connection/connectionManager').getConnection;
 const router = express.Router();
 
-router.get('/authenticate', async function(req, res, next) {
+router.post('/authenticate', async function(req, res, next) {
     let user = {
         login: req.body.login,
         password: req.body.password
     }
+
     try {
         await getConnection().connect( async (err, client, done) => {
             await client.query(`SELECT * FROM users WHERE login='${user.login}' AND password='${user.password}'`).then(results => {
@@ -14,7 +16,17 @@ router.get('/authenticate', async function(req, res, next) {
                     console.error('error: ', err);
                 }
                 done();  
-                res.status(200).json(results.rows);
+                if(results.rows[0].login === user.login && results.rows[0].password === user.password) {
+                    let id = results.rows[0].id || null;
+                    let token = jwt.sign({id}, process.env.SECRET, {
+                        expiresIn: 86400
+                    })
+                    res.json({auth: true, token: token});
+                    next();
+                } else {
+                    res.json({message: 'Login inválido!'});
+                    next();
+                }
             })
         });
     } catch (error) {
