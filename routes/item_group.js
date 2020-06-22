@@ -9,7 +9,7 @@ const router = express.Router();
 router.get('/get_all', async function(req,res,next) {
     try{
         await getConnection().connect( async (err, client, done) => {
-            await client.query('SELECT * FROM item_group ORDER BY id ASC').then(results => {
+            client.query('SELECT * FROM item_group ORDER BY id ASC').then(results => {
                 if(err) {
                     console.error('error: ', err);
                 }

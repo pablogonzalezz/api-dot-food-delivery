@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const connectAllDb = require('./connection/connectionManager').connectAllDb;
 const connectionResolver = require('./connection/connectionResolver');
 const cors = require('cors');
+const verifyJWT = require('./services/jwt');
 
 // Definindo configurações do app
 app.use(morgan('dev'));
@@ -21,8 +22,8 @@ const rotaItemGroup = require('./routes/item_group');
 const rotaAuthentication = require('./routes/auth');
 
 //INICIALIZAÇÃO DAS ROTAS
-app.use('/items', rotaItems);
-app.use('/item_group', rotaItemGroup);
+app.use('/items', verifyJWT, rotaItems);
+app.use('/item_group', verifyJWT, rotaItemGroup);
 app.use('/auth', rotaAuthentication);
 
 app.get('/', (req, res, next) => {
@@ -42,5 +43,6 @@ app.use((req, res, next) => {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 })
+
 
 module.exports = app;
