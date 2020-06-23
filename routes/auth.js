@@ -16,15 +16,18 @@ router.post('/authenticate', async function(req, res, next) {
                     console.error('error: ', err);
                 }
                 done();  
-                if(results.rows[0].login === user.login && results.rows[0].password === user.password) {
-                    let id = results.rows[0].id || null;
-                    let token = jwt.sign({id}, process.env.SECRET, {
-                        expiresIn: 86400
-                    })
-                    res.json({auth: true, token: token});
-                    next();
+                if(results.rows[0]) {
+                    if(results.rows[0].login === user.login && results.rows[0].password === user.password) {
+                        let id = results.rows[0].id || null;
+                        let token = jwt.sign({id}, process.env.SECRET, {
+                            expiresIn: 86400
+                        })
+                        res.json({auth: true, token: token});
+                        next();
+                    }
                 } else {
-                    res.json({message: 'Login inválido!'});
+                    console.log('login não autorizado!')
+                    res.status(401).json({message: 'Login inválido!'});
                     next();
                 }
             })
