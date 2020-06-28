@@ -41,16 +41,19 @@ router.post('/authenticate', async function(req, res, next) {
 
 router.post('/create_user', async function(req, res, next) {
     let user = {
+        name: req.body.name,
         login: req.body.login,
         password: req.body.password,
         email: req.body.email,
-        cpf: req.body.cpf
+        cpf: req.body.cpf,
+        address: JSON.stringify(req.body.address)
     }
-    if (user.login && user.password && user.email && user.cpf) {
+    
+    if (user.login && user.password && user.email && user.cpf && user.address) {
         try {
             await getConnection().connect( async (err, client, done) => {
                 await client.query(
-                    `INSERT INTO users(login,password,email,cpf) VALUES ('${user.login}', '${user.password}', '${user.email}', '${user.cpf}')`
+                    `INSERT INTO users(login,password,email,cpf,name,address) VALUES ('${user.login}', '${user.password}', '${user.email}', '${user.cpf}', '${user.name}', '${user.address}')`
                 ).then(results => {
                     if(err) {
                         console.error('error: ', err);
