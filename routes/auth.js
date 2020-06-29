@@ -54,7 +54,7 @@ router.post('/create_user', async function(req, res, next) {
         try {
             await getConnection().connect( async (err, client, done) => {
                 await client.query(
-                    `INSERT INTO users(login,password,email,cpf,name,address) VALUES ('${user.login}', '${user.password}', '${user.email}', '${user.cpf}', '${user.name}', '${user.address}', '${user.phone}')`
+                    `INSERT INTO users(login,password,email,cpf,name,address,phone) VALUES ('${user.login}', '${user.password}', '${user.email}', '${user.cpf}', '${user.name}', '${user.address}', '${user.phone}')`
                 ).then(results => {
                     if(err) {
                         console.error('error: ', err);
