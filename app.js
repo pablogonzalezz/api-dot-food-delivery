@@ -20,11 +20,13 @@ app.use(connectionResolver.resolve);
 const rotaItems = require('./routes/items');
 const rotaItemGroup = require('./routes/item_group');
 const rotaAuthentication = require('./routes/auth');
+const rotaUser = require('./routes/user');
 
 //INICIALIZAÇÃO DAS ROTAS
 app.use('/items', verifyJWT, rotaItems);
 app.use('/item_group', verifyJWT, rotaItemGroup);
 app.use('/auth', rotaAuthentication);
+app.use('/user', verifyJWT, rotaUser);
 
 app.get('/', (req, res, next) => {
     res.status(200).json({msg: 'The Application in running'})
