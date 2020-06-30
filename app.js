@@ -23,8 +23,8 @@ const rotaAuthentication = require('./routes/auth');
 const rotaUser = require('./routes/user');
 
 //INICIALIZAÇÃO DAS ROTAS
-app.use('/items', verifyJWT, rotaItems);
-app.use('/item_group', verifyJWT, rotaItemGroup);
+app.use('/items', rotaItems);
+app.use('/item_group', rotaItemGroup);
 app.use('/auth', rotaAuthentication);
 app.use('/user', verifyJWT, rotaUser);
 

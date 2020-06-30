@@ -1,6 +1,7 @@
 const express = require('express');
 const getConnection = require('../connection/connectionManager').getConnection;
 const router = express.Router();
+const verifyJWT = require('../services/jwt');
 
 
 /**
@@ -69,7 +70,7 @@ router.get('/get_item_by_group/:id', async function(req, res, next) {
 /**
 * Create an item.
 **/
-router.post('/create_item', async function(req, res, next) {
+router.post('/create_item', verifyJWT, async function(req, res, next) {
     let item = {
         title: req.body.title || null,
         description: req.body.description || null,
@@ -107,7 +108,7 @@ router.post('/create_item', async function(req, res, next) {
 /**
 * Update an item.
 **/
-router.post('/update_item/:id', async function(req, res, next) {
+router.post('/update_item/:id', verifyJWT, async function(req, res, next) {
     let item = {
         title: req.body.title || null,
         description: req.body.description || null,
@@ -145,7 +146,7 @@ router.post('/update_item/:id', async function(req, res, next) {
 /**
 * Delete an item.
 **/
-router.delete('/delete_item/:id', async function(req, res, next) {
+router.delete('/delete_item/:id', verifyJWT, async function(req, res, next) {
     try{
         await getConnection().connect( async (err, client, done) => {
             await client.query(

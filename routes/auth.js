@@ -39,6 +39,32 @@ router.post('/authenticate', async function(req, res, next) {
 })
 
 
+router.get('/verify-jwt', async function(req, res, next) {
+    try {
+        let token = req.headers['x-access-token'];
+
+        if(!token) return res.status(401).json({auth: false, message: 'no token provided'});
+
+        jwt.verify(token, process.env.SECRET, (err, decoded) => {
+            if(err) {
+                return res.status(500).json({auth: false, message: 'Failed to authenticate'});
+            } else {
+                var current_time = Date.now() / 1000;
+                if ( decoded.exp < current_time) {
+                    return res.status(401).json({auth: false, decoded: decoded, message: 'The token has expired.'})
+                } else {
+                    return res.status(200).json({auth: true, decoded: decoded, message: 'Its a valid token!'})
+                }       
+            }
+        })
+        next();
+    } catch (error) {
+        console.error('erro ao fazer requisição: ', error);
+        res.status(500).json({msg: 'erro ao fazer a requisição', obj:error.message});
+    }
+})
+
+
 router.post('/create_user', async function(req, res, next) {
     let user = {
         name: req.body.name,
